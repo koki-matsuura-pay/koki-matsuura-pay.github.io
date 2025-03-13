@@ -4,11 +4,12 @@
   <meta charset="UTF-8">
   <title>Title</title>
 </head>
-  <script>
-    const onFailed = (code, e) => {
-      console.log("failed.");
-    }
-  </script>
+<script>
+function handleFailedPayment(response) {
+    console.log("決済失敗:", response);
+    alert("決済に失敗しました。もう一度お試しください。");
+}
+</script>
 <div>
   <form action="/pay" method="post">
     <script type="text/javascript" src="https://checkout.pay.jp/" class="payjp-button"
