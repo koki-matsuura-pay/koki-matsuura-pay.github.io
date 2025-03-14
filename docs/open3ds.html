@@ -65,10 +65,10 @@
     </div>
 
     <script>
-        const payjp = Payjp(publicKey);
+        var payjp = null;
         document.getElementById("secureForm").addEventListener("submit", function(event) {
             event.preventDefault();
-
+            
             const publicKey = document.getElementById("publicKey").value;
             const threeDSId = document.getElementById("threeDSId").value;
 
@@ -82,6 +82,10 @@
                 return;
             }
 
+            if (payjp === null){
+                payjp = Payjp(publicKey);
+            }
+            
             // PAY.JPの3Dセキュア処理を開始
             payjp.openThreeDSecureDialog(threeDSId).then(() => {
                 alert("3Dセキュア認証が完了しました。");
