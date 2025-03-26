@@ -1,0 +1,118 @@
+<!doctype html><html><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><style>html{
+        height: 100%;
+      }
+      body{
+        height: 100%;
+        background:rgba(0,0,0,0.5);
+        font-family:sans-serif;
+      }
+      *{
+        box-sizing:border-box;
+        margin:0;
+        padding:0;
+      }
+      #wrapper {
+        width: 100%;
+        height: 100%;
+        padding-top: 50px;
+        display: flex;
+        @media screen and (min-width: 0px) and (max-width: 768px) {
+          justify-content: center;
+          align-items: center;
+          padding-top: 0px;
+        }
+      }
+      #modal-wrapper {
+        position: relative;
+        width: 400px;
+        height: 500px;
+        margin: 0 auto;
+        @media screen and (min-width: 0px) and (max-width: 768px) {
+          width: 100%;
+          height: 85vh;
+          margin: auto 16px;
+        }
+      }
+
+      #modal-content {
+        background: #fff;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        box-shadow: none;
+        border-radius: 4px;
+      }
+      /** 
+       * フェードインアウトアニメーション
+       * ここのtransitionによるアニメーションがないとiframeの終了処理が動かないので注意
+       * JS側ではaddEventListener('transitionend', ...)によってアニメーション終了を検知する
+       */
+      #wrapper {
+        opacity: 0;
+        @media screen and (min-width: 0px) and (max-width: 768px) {
+          transform: translateY(50%);
+        }
+      }
+      #wrapper.fade-in {
+        transition: 0.2s;
+        opacity: 1;
+        @media screen and (min-width: 0px) and (max-width: 768px) {
+          transform: translateY(0);
+        }
+      }
+      #wrapper.fade-out {
+        transition: 0.2s;
+        opacity: 0;
+        @media screen and (min-width: 0px) and (max-width: 768px) {
+          transform: translateY(50%);
+        }
+      }
+        
+      #payjp-close {
+        text-decoration: none;
+        position: absolute;
+        top: -36px;
+        right: 0;
+        width: 36px;
+        height: 36px;
+        padding: 6px;
+        cursor: pointer;
+
+        &:hover {
+            opacity: .8;
+        }
+
+        &:before {
+            content: "";
+            width: 30px;
+            height: 1px;
+            display: block;
+            background-color: #fff;
+            transform: rotate(45deg);
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            margin: auto;
+        }
+
+        &:after {
+            content: "";
+            display: block;
+            width: 30px;
+            height: 1px;
+            background-color: #fff;
+            transform: rotate(135deg);
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            margin: auto;
+        }
+    }</style><script>window.addEventListener('load', function(event) {
+        document.getElementById('wrapper').classList.add('fade-in');
+      });</script></head><body><div id="wrapper" class="fade"><section id="modal-wrapper"><div id="payjp-close"></div><div id="modal-content"></div></section></div><script src="/v2/tds_iframe_component.1742970460278.js"></script><script>new TdsIframeComponent()</script></body></html>
