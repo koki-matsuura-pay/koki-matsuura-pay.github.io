@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <script type="text/javascript" src="https://js.pay.jp/v2/pay.js"></script>
+
+    <style>
+    @supports (-webkit-appearance: -apple-pay-button) { 
+      .apple-pay-button {
+        -webkit-appearance: -apple-pay-button;
+      }
+      .apple-pay-button-black {
+        -apple-pay-button-style: black;
+      }
+    }
+    @supports not (-webkit-appearance: -apple-pay-button) {
+      .apple-pay-button {
+        background-size: 100% 60%;
+        background-repeat: no-repeat;
+        background-position: 50% 50%;
+        border-radius: 5px;
+        padding: 0px;
+        box-sizing: border-box;
+        min-width: 200px;
+        min-height: 32px;
+        max-height: 64px;
+      }
+      .apple-pay-button-black {
+        background-image: -webkit-named-image(apple-pay-logo-white);
+        background-color: black;
+      }
+    }
+    </style>
+  </head>
+  <body>
+    <h1>PAY.JP Apple Pay on the Web サンプル</h1>
+    <div id='notice' style="display:none;">
+      ここにApple Payの支払いボタンが表示されます。表示されない場合は<a href="https://pay.jp/docs/apple-pay-integrate-web" target="_blank" rel="noopener">こちら</a>の「Apple Pay on the Web が利用可能か判定する」に詳細条件を記載しておりますのでご確認ください。
+    </div>
+    <div id="apple-pay-button-wrapper" style="display:none;">
+      <div id="apple-pay-button" class="apple-pay-button apple-pay-button-black"></div>
+      ※動作確認用サンプルのため実行しても実際の決済は行われません
+    </div>
+    <div>
+      <p id="result"></p>
+    </div>
+
+    <script type="text/javascript">
+var pk = 'pk_test_e3c66a005eca34b0da64c6e8'
+var payjp = Payjp(pk)
+if (payjp.getPublicKey() !== pk) console.error('pk...')
+
+// test retrieveAvailability
+// payjp.retrieveAvailability().then((r) => console.log('retrieveAvailability', r))
+
+// test ApplePayOnTheWeb
+const applePayButton = document.getElementById('apple-pay-button')
+const applePayButtonWrapper = document.getElementById('apple-pay-button-wrapper')
+const noticeText = document.getElementById('notice')
+payjp.applePay.checkAvailability(function checkAvailabilityHandler(available, errMsg) {
+  console.log("apple pay availabirity checked: " + (available ? 'ok' : errMsg))
+  applePayButton.style.display = available ? 'block' : 'none';
+  applePayButtonWrapper.style.display = available ? 'block' : 'none';
+  noticeText.style.display = available ? 'none' : 'block';
+})
+applePayButton.addEventListener('click', function onClick() {
+  var paymentRequest = {
+    countryCode: 'JP',
+    currencyCode: 'JPY',
+    total: {
+      label: 'PAY.JP SAMPLE',
+      amount: '50'
+    }
+  }
+  var session = payjp.applePay.buildSession(paymentRequest, function success(result) {
+    console.log(JSON.stringify(result))
+    document.getElementById('result').innerText = 'Token = ' + result.token.id;
+    session.completePayment(ApplePaySession.STATUS_SUCCESS)
+  }, function failure(e) {
+    console.log(JSON.stringify(e))
+  })
+  session.begin()
+})
+
+    </script>
+  </body>
+</html>
